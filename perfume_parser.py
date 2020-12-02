@@ -9,12 +9,12 @@ CATEGORIES_URLS = [
 
 
 def save_page(response_str, file_name='page.html'):
-    with open(file_name, 'w', encoding='utf8') as html_file:
+    with open(file_name, 'w', encoding='utf-8') as html_file:
         html_file.write(response_str)
 
 
 def save_json(data, file_name='data.json'):
-    with open(file_name, 'w', encoding='utf8') as json_file:
+    with open(file_name, 'w', encoding='utf-8') as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=True)
 
 
