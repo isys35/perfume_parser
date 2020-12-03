@@ -39,12 +39,17 @@ DESCRIPTION = """"<p style=""
 "
 """
 
-CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи']
+CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи', 'мыло']
 CATEGORIES = {
     'женские': 'Для женщин',
     'женске': 'Для женщин',
     'мужские': 'Для мужчин',
-    'унисекс': 'Унисекс'
+    'женская': 'Для женщин',
+    'женский': 'Для женщин',
+    'унисекс': 'Унисекс',
+    'мужской': 'Для мужчин',
+    'женсике': 'Для женщин',
+    'женмкие': 'Для женщин'
 }
 
 if os.path.isfile(BRENDS_FILE):
@@ -86,82 +91,105 @@ def _parse_classification(text):
 
 
 def _parse_category(text):
-    category = re.search('\((.+)\)', text).group(1)
-    return CATEGORIES[category]
+    try:
+        category = re.search('\((.+)\)', text).group(1)
+    except AttributeError:
+        finish_category = CATEGORIES['женские']
+        return finish_category
+    if 'мужск' in text:
+        finish_category = CATEGORIES['мужские']
+        return finish_category
+    elif 'жен' in text:
+        finish_category = CATEGORIES['женские']
+        return finish_category
+    elif 'унисекс' in text:
+        finish_category = CATEGORIES['унисекс']
+        return finish_category
+    elif 'тушь' in text:
+        finish_category = CATEGORIES['женские']
+        return finish_category
+    return CATEGORIES[category.lower()]
 
+
+def _get_perfume_data_from_row(row):
+    cols_auto = row.select('.col-auto')
+    cols = row.select('.col')
+    article = cols_auto[0].text
+    all_text = cols[0].text
+    print(all_text)
+    brend = _parse_brend(all_text)
+    if brend:
+        text_without_brend = all_text.split(brend, maxsplit=1)[-1].strip()
+    else:
+        return
+    category = _parse_category(text_without_brend)
+    name = text_without_brend.split('(')[0].strip()
+    if not name:
+        return
+    #TODO ИСПРАВИТЬ ЛЕСТНИЦУ СНИЗУ!!!!!!!!!!!!!!
+    try:
+        volume = re.search('(\S+)ml', text_without_brend).group(1)
+        volume = '{}ml'.format(volume)
+    except AttributeError:
+        try:
+            volume = re.search('(\S+)гр\.', text_without_brend).group(1)
+            volume = '{}гр.'.format(volume)
+        except AttributeError:
+            try:
+                volume = re.search('(\S+)M ', text_without_brend).group(1)
+                volume = '{}M'.format(volume)
+            except AttributeError:
+                try:
+                    volume = re.search('(\S+)G ', text_without_brend).group(1)
+                    volume = '{}G'.format(volume)
+                except AttributeError:
+                    volume = ''
+    classification = _parse_classification(text_without_brend)
+    price = cols_auto[1].text.strip()
+    if u'\xa0' in price:
+        price = price.replace(u'\xa0', '')
+    perfume_data = [text_without_brend, brend, None, 3, article, category, None, 'mode', '', DESCRIPTION, 1000, 0, 0,
+                    'шт.', 0.5, 'kg', 0, 0, 1, 0, 0, price, 0, 'RUB', 0, name, name, name, name, None, None, None,
+                    '', classification, 'Быстрая доставка по всей России', '', '', volume, '', None,
+                    0, None]
+    return perfume_data
+
+
+def _parse_max_page(soup):
+    return int(soup.select_one('.bx-pagination-container').select('li')[-2].text)
+
+
+def parsing(start_page=None):
+    if not start_page:
+        write_header()
+    response = requests.get(URL)
+    soup = BeautifulSoup(response.text, 'lxml')
+    max_page = _parse_max_page(soup)
+    if not start_page:
+        page = 1
+    else:
+        page = start_page
+    uniq_names = []
+    while page != max_page + 1:
+        print('Страница {}'.format(page))
+        perfumes_data = []
+        if page != 1:
+            url = 'https://optparf.ru/?page=page-{}'.format(page)
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'lxml')
+        rows = soup.select('.row.table-body')
+        for row in rows:
+            perfume_data = _get_perfume_data_from_row(row)
+            if perfume_data:
+                mode = None
+                if perfume_data[25] in uniq_names:
+                    mode = '*'
+                else:
+                    uniq_names.append(perfume_data[25])
+                perfume_data[7] = mode
+                perfumes_data.append(perfume_data)
+        save_data(perfumes_data)
+        page += 1
 
 if __name__ == '__main__':
-    response = requests.get(URL)
-    write_header()
-    soup = BeautifulSoup(response.text, 'lxml')
-    rows = soup.select('.row.table-body')
-    perfumes_data = []
-    uniq_names = []
-    for row in rows:
-        cols_auto = row.select('.col-auto')
-        cols = row.select('.col')
-        article = cols_auto[0].text
-        all_text = cols[0].text
-        brend = _parse_brend(all_text)
-        if brend:
-            text_without_brend = all_text.split(brend, maxsplit=1)[-1].strip()
-        else:
-            continue
-        category = _parse_category(text_without_brend)
-        name = text_without_brend.split('(')[0].strip()
-        mode = None
-        if name in uniq_names:
-            mode = '*'
-        else:
-            uniq_names.append(name)
-        volume = re.search('(\d+)ml', text_without_brend).group(1)
-        classification = _parse_classification(text_without_brend)
-        price = cols_auto[1].text.strip()
-        if u'\xa0' in price:
-            price = price.replace(u'\xa0', '')
-        perfume_data = [
-            text_without_brend,
-            brend,
-            None,
-            3,
-            article,
-            category,
-            None,
-            mode,
-            '',
-            DESCRIPTION,
-            1000,
-            0,
-            0,
-            'шт.',
-            0.5,
-            'kg',
-            0,
-            0,
-            1,
-            0,
-            0,
-            0,
-            price,
-            'USD',
-            0,
-            name,
-            name,
-            name,
-            name,
-            None,
-            None,
-            None,
-            '',
-            classification,
-            'Быстрая доставка по всей России',
-            '',
-            '',
-            '{}ml'.format(volume),
-            '',
-            None,
-            0,
-            None
-        ]
-        perfumes_data.append(perfume_data)
-    save_data(perfumes_data)
+    parsing(start_page=197)

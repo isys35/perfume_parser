@@ -24,7 +24,6 @@ def get_brends():
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'lxml')
         for brend_block in soup.select('a.wrap_a.items.type_name'):
-            print(brend_block.text)
             if brend_block.text not in brends:
                 brends.append(brend_block.text)
     return brends
