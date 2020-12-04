@@ -54,14 +54,14 @@ else:
     perfume_parser.save_json(BRENDS, BRENDS_FILE)
 
 
-def write_header():
-    with open(CSV_FILE, "w", newline='') as csv_file:
+def write_header(file_name=CSV_FILE):
+    with open(file_name, "w", newline='', encoding='utf8') as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerow(CSV_HEADER)
 
 
-def save_data(data):
-    with open(CSV_FILE, "a", newline='') as csv_file:
+def save_data(data, file_name=CSV_FILE):
+    with open(file_name, "a", newline='', encoding='utf8') as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerows(data)
 
