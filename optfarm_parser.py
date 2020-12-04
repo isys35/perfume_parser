@@ -139,6 +139,8 @@ def _get_perfume_data_from_row(row):
     price = cols_auto[1].text.strip()
     if u'\xa0' in price:
         price = price.replace(u'\xa0', '')
+    if '.' in price:
+        price = price.replace('.', ',')
     perfume_data = [text_without_brend, brend, None, 3, article, category, None, 'mode', '', DESCRIPTION, 1000, 0, 0,
                     'шт.', 0.5, 'kg', 0, 0, 1, 0, 0, price, 0, 'RUB', 0, name, name, name, name, None, None, None,
                     '', classification, 'Быстрая доставка по всей России', '', '', volume, '', None,
