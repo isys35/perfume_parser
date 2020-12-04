@@ -41,15 +41,9 @@ DESCRIPTION = """"<p style=""
 
 CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи', 'мыло']
 CATEGORIES = {
-    'женские': 'Для женщин',
-    'женске': 'Для женщин',
-    'мужские': 'Для мужчин',
-    'женская': 'Для женщин',
-    'женский': 'Для женщин',
+    'жен': 'Для женщин',
+    'муж': 'Для мужчин',
     'унисекс': 'Унисекс',
-    'мужской': 'Для мужчин',
-    'женсике': 'Для женщин',
-    'женмкие': 'Для женщин'
 }
 
 if os.path.isfile(BRENDS_FILE):
@@ -91,24 +85,38 @@ def _parse_classification(text):
 
 
 def _parse_category(text):
-    try:
-        category = re.search('\((.+)\)', text).group(1)
-    except AttributeError:
-        finish_category = CATEGORIES['женские']
-        return finish_category
-    if 'мужск' in text:
-        finish_category = CATEGORIES['мужские']
+    if 'муж' in text:
+        finish_category = CATEGORIES['муж']
         return finish_category
     elif 'жен' in text:
-        finish_category = CATEGORIES['женские']
+        finish_category = CATEGORIES['жен']
         return finish_category
     elif 'унисекс' in text:
         finish_category = CATEGORIES['унисекс']
         return finish_category
     elif 'тушь' in text:
-        finish_category = CATEGORIES['женские']
+        finish_category = CATEGORIES['жен']
         return finish_category
-    return CATEGORIES[category.lower()]
+    else:
+        finish_category = CATEGORIES['жен']
+        return finish_category
+
+
+def _parse_volume(text):
+    volume_search = re.search('(\S+)ml', text)
+    if volume_search:
+        return '{}ml'.format(volume_search.group(1))
+    elif re.search('(\S+)гр\.', text):
+        volume = '{}гр.'.format(re.search('(\S+)гр\.', text).group(1))
+        return volume
+    elif re.search('(\S+)M ', text):
+        volume = '{}M'.format(re.search('(\S+)M ', text).group(1))
+        return volume
+    elif re.search('(\S+)G ', text):
+        volume = '{}G'.format(re.search('(\S+)G ', text).group(1))
+        return volume
+    else:
+        return ''
 
 
 def _get_perfume_data_from_row(row):
@@ -126,24 +134,7 @@ def _get_perfume_data_from_row(row):
     name = text_without_brend.split('(')[0].strip()
     if not name:
         return
-    #TODO ИСПРАВИТЬ ЛЕСТНИЦУ СНИЗУ!!!!!!!!!!!!!!
-    try:
-        volume = re.search('(\S+)ml', text_without_brend).group(1)
-        volume = '{}ml'.format(volume)
-    except AttributeError:
-        try:
-            volume = re.search('(\S+)гр\.', text_without_brend).group(1)
-            volume = '{}гр.'.format(volume)
-        except AttributeError:
-            try:
-                volume = re.search('(\S+)M ', text_without_brend).group(1)
-                volume = '{}M'.format(volume)
-            except AttributeError:
-                try:
-                    volume = re.search('(\S+)G ', text_without_brend).group(1)
-                    volume = '{}G'.format(volume)
-                except AttributeError:
-                    volume = ''
+    volume = _parse_volume(text_without_brend)
     classification = _parse_classification(text_without_brend)
     price = cols_auto[1].text.strip()
     if u'\xa0' in price:
@@ -162,13 +153,12 @@ def _parse_max_page(soup):
 def parsing(start_page=None):
     if not start_page:
         write_header()
-    response = requests.get(URL)
-    soup = BeautifulSoup(response.text, 'lxml')
-    max_page = _parse_max_page(soup)
-    if not start_page:
         page = 1
     else:
         page = start_page
+    response = requests.get(URL)
+    soup = BeautifulSoup(response.text, 'lxml')
+    max_page = _parse_max_page(soup)
     uniq_names = []
     while page != max_page + 1:
         print('Страница {}'.format(page))
@@ -191,5 +181,6 @@ def parsing(start_page=None):
         save_data(perfumes_data)
         page += 1
 
+
 if __name__ == '__main__':
-    parsing(start_page=197)
+    parsing()
