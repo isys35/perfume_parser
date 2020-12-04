@@ -55,13 +55,13 @@ else:
 
 
 def write_header(file_name=CSV_FILE):
-    with open(file_name, "w", newline='', encoding='utf8') as csv_file:
+    with open(file_name, "w", newline='', encoding='cp1251') as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerow(CSV_HEADER)
 
 
 def save_data(data, file_name=CSV_FILE):
-    with open(file_name, "a", newline='', encoding='utf8') as csv_file:
+    with open(file_name, "a", newline='', encoding='cp1251') as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerows(data)
 
