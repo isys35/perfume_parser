@@ -8,6 +8,22 @@ HOST = 'https://randewoo.ru'
 CSV_FILE = 'data_with_description.csv'
 
 
+def _parse_notes(soup):
+    dl_soup = soup.select_one('dl.dl')
+    divs_soup = dl_soup.select('div')
+    top_notes = None
+    middle_notes = None
+    base_notes = None
+    for div_soup in divs_soup:
+        if div_soup.select_one('dt').text == 'Верхние ноты':
+            top_notes = div_soup.select_one('dd').text
+        elif div_soup.select_one('dt').text == 'Средние ноты':
+            middle_notes = div_soup.select_one('dd').text
+        elif div_soup.select_one('dt').text == 'Базовые ноты':
+            base_notes = div_soup.select_one('dd').text
+    return top_notes, middle_notes, base_notes
+
+
 def update_descriptions(start_index=None):
     try:
         data = optfarm_parser.load_data()
@@ -30,7 +46,10 @@ def update_descriptions(start_index=None):
             response_product = requests.get(url_product)
             soup_product = BeautifulSoup(response_product.text, 'lxml')
             description = soup_product.select_one('.collapsable').text
-            perfume_data[9] = description
+            perfume_data[9] += "<p>{}</p>".format(description)
+            notes = _parse_notes(soup_product)
+            if notes:
+                perfume_data[32], perfume_data[35], perfume_data[38] = notes
         try:
             optfarm_parser.save_data([perfume_data], CSV_FILE)
         except UnicodeEncodeError:

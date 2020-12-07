@@ -24,7 +24,7 @@ CSV_HEADER = ['name : Название', 'vendor : Производитель', 
               'yml_delivery_options_enabled : Параметры курьерской доставки по своему региону',
               'yml_delivery_options_cost : Стоимость доставки для своего региона']
 
-DESCRIPTION = """"<p style=""
+DESCRIPTION = """<p style=""
     text-align: center;
 ""><span style=""display: inline-block;width: 320px;text-align: center;vertical-align: top;padding: 6px;margin: 0 0 20px;border: 1px solid #f5f5f5;""><strong>Ассортимент</strong><br />
 <span style=""
@@ -36,7 +36,6 @@ DESCRIPTION = """"<p style=""
 <span style=""
     font-size: 14px;
 "">быстрая доставка по всей России</span></span> <span style=""display: inline-block;min-width: 12px;""> </span></p>
-"
 """
 
 CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи', 'мыло']
