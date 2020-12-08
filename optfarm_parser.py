@@ -24,18 +24,18 @@ CSV_HEADER = ['name : Название', 'vendor : Производитель', 
               'yml_delivery_options_enabled : Параметры курьерской доставки по своему региону',
               'yml_delivery_options_cost : Стоимость доставки для своего региона']
 
-DESCRIPTION = """<p style=""
+DESCRIPTION = """<p style="
     text-align: center;
-""><span style=""display: inline-block;width: 320px;text-align: center;vertical-align: top;padding: 6px;margin: 0 0 20px;border: 1px solid #f5f5f5;""><strong>Ассортимент</strong><br />
-<span style=""
+"><span style="display: inline-block;width: 320px;text-align: center;vertical-align: top;padding: 6px;margin: 0 0 20px;border: 1px solid #f5f5f5;"><strong>Ассортимент</strong><br />
+<span style="
     font-size: 14px;
-"">модные новинки и изысканные ароматы</span></span> <span style=""display: inline-block;min-width: 10px;""> </span> <span style=""display: inline-block;width: 320px;text-align: center;vertical-align: top;margin: 0 0 20px;padding: 6px;border: 1px solid #f5f5f5;""><strong> 100% гарантия</strong><br />
-<span style=""
+">модные новинки и изысканные ароматы</span></span> <span style="display: inline-block;min-width: 10px;"> </span> <span style="display: inline-block;width: 320px;text-align: center;vertical-align: top;margin: 0 0 20px;padding: 6px;border: 1px solid #f5f5f5;"><strong> 100% гарантия</strong><br />
+<span style="
     font-size: 14px;
-"">вся продукция от мировых брендов</span></span> <span style=""display: inline-block;min-width: 10px;""> </span> <span style=""display: inline-block;width: 320px;text-align: center;vertical-align: top;margin: 0 0 20px;padding: 6px;border: 1px solid #f5f5f5;""><strong> Доставка</strong><br />
-<span style=""
+">вся продукция от мировых брендов</span></span> <span style="display: inline-block;min-width: 10px;"> </span> <span style="display: inline-block;width: 320px;text-align: center;vertical-align: top;margin: 0 0 20px;padding: 6px;border: 1px solid #f5f5f5;"><strong> Доставка</strong><br />
+<span style="
     font-size: 14px;
-"">быстрая доставка по всей России</span></span> <span style=""display: inline-block;min-width: 12px;"> </span></p>
+">быстрая доставка по всей России</span></span> <span style="display: inline-block;min-width: 12px;"> </span></p>
 """
 
 CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи', 'мыло']
