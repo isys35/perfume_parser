@@ -35,7 +35,7 @@ DESCRIPTION = """<p style=""
 "">вся продукция от мировых брендов</span></span> <span style=""display: inline-block;min-width: 10px;""> </span> <span style=""display: inline-block;width: 320px;text-align: center;vertical-align: top;margin: 0 0 20px;padding: 6px;border: 1px solid #f5f5f5;""><strong> Доставка</strong><br />
 <span style=""
     font-size: 14px;
-"">быстрая доставка по всей России</span></span> <span style=""display: inline-block;min-width: 12px;""> </span></p>
+"">быстрая доставка по всей России</span></span> <span style=""display: inline-block;min-width: 12px;"> </span></p>
 """
 
 CLASSIFICATIONS = ['одеколон', 'туалетная вода', 'парфюмерная вода', 'духи', 'мыло']
@@ -66,7 +66,7 @@ def save_data(data, file_name=CSV_FILE, encoding='cp1251'):
 
 
 def load_data(file_name=CSV_FILE):
-    with open(file_name, "r", newline='', encoding='utf-8') as csv_file:
+    with open(file_name, "r", newline='', encoding='cp1251') as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
         data = [el for el in reader]
         return data
