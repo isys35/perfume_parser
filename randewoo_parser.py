@@ -67,4 +67,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions(9861)
+    update_descriptions()
