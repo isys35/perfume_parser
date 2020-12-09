@@ -45,11 +45,13 @@ def update_descriptions(start_index=None):
             url_product = HOST + product_search_soup.select_one('a.b-catalogItem__photoWrap')['href']
             response_product = requests.get(url_product)
             soup_product = BeautifulSoup(response_product.text, 'lxml')
-            description = soup_product.select_one('.collapsable').text
-            perfume_data[9] = "<p>{}</p>".format(description) + optfarm_parser.DESCRIPTION
-            notes = _parse_notes(soup_product)
-            if notes:
-                perfume_data[32], perfume_data[35], perfume_data[38] = notes
+            description_soup = soup_product.select_one('.collapsable')
+            if description_soup:
+                description = description_soup.text
+                perfume_data[9] = "<p>{}</p>".format(description) + optfarm_parser.DESCRIPTION
+                notes = _parse_notes(soup_product)
+                if notes:
+                    perfume_data[32], perfume_data[35], perfume_data[38] = notes
         else:
             perfume_data[9] = optfarm_parser.DESCRIPTION
         try:
@@ -65,4 +67,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions()
+    update_descriptions(9861)
