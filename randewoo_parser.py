@@ -4,7 +4,7 @@ from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup
 import time
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, ChunkedEncodingError
 
 HOST = 'https://randewoo.ru'
 CSV_FILE = 'data_with_description.csv'
@@ -31,9 +31,8 @@ def get_response(url):
         try:
             response = requests.get(url)
             return response
-        except ConnectionError:
+        except (ConnectionError, ChunkedEncodingError):
             time.sleep(5)
-
 
 
 def update_descriptions(start_index=None):
@@ -80,4 +79,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions(2310)
+    update_descriptions(3073)
