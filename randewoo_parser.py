@@ -4,6 +4,7 @@ from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup
 import time
+from requests.exceptions import ConnectionError
 
 HOST = 'https://randewoo.ru'
 CSV_FILE = 'data_with_description.csv'
@@ -74,4 +75,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions(813)
+    update_descriptions(1308)
