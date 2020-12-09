@@ -3,6 +3,7 @@ import perfume_parser
 from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup
+import time
 
 HOST = 'https://randewoo.ru'
 CSV_FILE = 'data_with_description.csv'
@@ -33,12 +34,18 @@ def update_descriptions(start_index=None):
     if not start_index:
         optfarm_parser.write_header(CSV_FILE)
         start_index = 1
-    for perfume_data in data[start_index:]:
+    for index, perfume_data in enumerate(data[start_index:]):
+        print(index)
         full_name = "{} {}".format(perfume_data[1], perfume_data[25])
         print(full_name)
         search_text = quote(full_name)
         url = "{}/search?q={}".format(HOST, search_text)
-        response_search = requests.get(url)
+        while True:
+            try:
+                response_search = requests.get(url)
+                break
+            except ConnectionError:
+                time.sleep(5)
         soup_search = BeautifulSoup(response_search.text, 'lxml')
         product_search_soup = soup_search.select_one('li.products__item.js-products__item.b-catalogItem')
         if product_search_soup:
@@ -67,4 +74,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions()
+    update_descriptions(813)
