@@ -26,6 +26,16 @@ def _parse_notes(soup):
     return top_notes, middle_notes, base_notes
 
 
+def get_response(url):
+    while True:
+        try:
+            response = requests.get(url)
+            return response
+        except ConnectionError:
+            time.sleep(5)
+
+
+
 def update_descriptions(start_index=None):
     try:
         data = optfarm_parser.load_data()
@@ -41,22 +51,12 @@ def update_descriptions(start_index=None):
         print(full_name)
         search_text = quote(full_name)
         url = "{}/search?q={}".format(HOST, search_text)
-        while True:
-            try:
-                response_search = requests.get(url)
-                break
-            except ConnectionError:
-                time.sleep(5)
+        response_search = get_response(url)
         soup_search = BeautifulSoup(response_search.text, 'lxml')
         product_search_soup = soup_search.select_one('li.products__item.js-products__item.b-catalogItem')
         if product_search_soup:
             url_product = HOST + product_search_soup.select_one('a.b-catalogItem__photoWrap')['href']
-            while True:
-                try:
-                    response_product = requests.get(url_product)
-                    break
-                except ConnectionError:
-                    time.sleep(5)
+            response_product = get_response(url_product)
             soup_product = BeautifulSoup(response_product.text, 'lxml')
             description_soup = soup_product.select_one('.collapsable')
             if description_soup:
@@ -80,4 +80,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions(1308)
+    update_descriptions(2310)
