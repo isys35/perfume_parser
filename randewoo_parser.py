@@ -51,7 +51,12 @@ def update_descriptions(start_index=None):
         product_search_soup = soup_search.select_one('li.products__item.js-products__item.b-catalogItem')
         if product_search_soup:
             url_product = HOST + product_search_soup.select_one('a.b-catalogItem__photoWrap')['href']
-            response_product = requests.get(url_product)
+            while True:
+                try:
+                    response_product = requests.get(url_product)
+                    break
+                except ConnectionError:
+                    time.sleep(5)
             soup_product = BeautifulSoup(response_product.text, 'lxml')
             description_soup = soup_product.select_one('.collapsable')
             if description_soup:
