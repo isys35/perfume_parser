@@ -180,7 +180,7 @@ def parsing(start_page=None):
             perfume_data = _get_perfume_data_from_row(row)
             if perfume_data:
                 mode = None
-                uniq_name = '{} {}'.format(perfume_data[25], perfume_data[5])
+                uniq_name = '{} {} {}'.format(perfume_data[25], perfume_data[1], perfume_data[5])
                 if uniq_name in uniq_names:
                     mode = '*'
                 else:

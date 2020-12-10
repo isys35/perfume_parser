@@ -69,7 +69,9 @@ def update_descriptions(start_index=None):
         try:
             optfarm_parser.save_data([perfume_data], CSV_FILE)
         except UnicodeEncodeError:
-            optfarm_parser.save_data([perfume_data], CSV_FILE, encoding='utf-8')
+            perfume_data[9] = optfarm_parser.DESCRIPTION
+            optfarm_parser.save_data([perfume_data], CSV_FILE)
+
 
 
 def get_not_updated_description_percent():
@@ -79,4 +81,4 @@ def get_not_updated_description_percent():
 
 
 if __name__ == '__main__':
-    update_descriptions(3073)
+    update_descriptions()
