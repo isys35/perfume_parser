@@ -54,19 +54,19 @@ else:
 
 
 def write_header(file_name=CSV_FILE):
-    with open(file_name, "w", newline='', encoding='cp1251') as csv_file:
+    with open(file_name, "w", newline='', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerow(CSV_HEADER)
 
 
-def save_data(data, file_name=CSV_FILE, encoding='cp1251'):
+def save_data(data, file_name=CSV_FILE, encoding='utf-8'):
     with open(file_name, "a", newline='', encoding=encoding) as csv_file:
         writer = csv.writer(csv_file, delimiter=';')
         writer.writerows(data)
 
 
 def load_data(file_name=CSV_FILE):
-    with open(file_name, "r", newline='', encoding='cp1251') as csv_file:
+    with open(file_name, "r", newline='', encoding='utf-8') as csv_file:
         reader = csv.reader(csv_file, delimiter=';')
         data = [el for el in reader]
         return data
