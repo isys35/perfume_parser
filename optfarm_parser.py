@@ -75,7 +75,7 @@ def load_data(file_name=CSV_FILE):
 def _parse_brend(text):
     brend = None
     for BREND in BRENDS:
-        if BREND in text:
+        if BREND.lower() in text.lower():
             brend = BREND
             break
     return brend
