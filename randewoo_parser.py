@@ -73,12 +73,53 @@ def update_descriptions(start_index=None):
             optfarm_parser.save_data([perfume_data], CSV_FILE)
 
 
-
 def get_not_updated_description_percent():
     data = optfarm_parser.load_data(CSV_FILE)
     count_not_updated_data = len([el for el in data if el[9] == optfarm_parser.DESCRIPTION])
     return int(100 * count_not_updated_data / len(data))
 
 
+def updater():
+    data = optfarm_parser.load_data(CSV_FILE)
+    data[9807][9] = optfarm_parser.DESCRIPTION
+    data[9807][1] = 'Hermes'
+    data[9807][0] = 'Equipage Geranium (мужские) 100ml туалетная вода'
+    data[9807][25] = 'Equipage Geranium'
+    data[9807][26] = 'Equipage Geranium'
+    data[9807][27] = 'Equipage Geranium'
+    data[9807][28] = 'Equipage Geranium'
+    data[9808][9] = optfarm_parser.DESCRIPTION
+    data[9808][1] = 'Hermes'
+    data[9808][0] = 'Equipage Geranium (мужские) 100ml туалетная вода'
+    data[9808][25] = 'Equipage Geranium'
+    data[9808][26] = 'Equipage Geranium'
+    data[9808][27] = 'Equipage Geranium'
+    data[9808][28] = 'Equipage Geranium'
+    data[1539][9] = optfarm_parser.DESCRIPTION
+    data[1539][1] = 'Atelier Boheme'
+    data[1539][0] = 'Lea Aux Yeux Lilas Aimait Les Geraniums (женские) 15ml парфюмерная вода'
+    data[1539][25] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1539][26] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1539][27] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1539][28] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+
+    data[1540][9] = optfarm_parser.DESCRIPTION
+    data[1540][1] = 'Atelier Boheme'
+    data[1540][0] = 'Lea Aux Yeux Lilas Aimait Les Geraniums (женские) 15ml парфюмерная вода'
+    data[1540][25] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1540][26] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1540][27] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+    data[1540][28] = 'Lea Aux Yeux Lilas Aimait Les Geraniums'
+
+    data[11304][9] = optfarm_parser.DESCRIPTION
+    data[11304][1] = 'Jo Malone'
+    data[11304][0] = 'Jo Malone Geranium & Verbena (унисекс) 30ml одеколон'
+    data[11304][25] = 'Geranium & Verbena'
+    data[11304][26] = 'Geranium & Verbena'
+    data[11304][27] = 'Geranium & Verbena'
+    data[11304][28] = 'Geranium & Verbena'
+
+    optfarm_parser.save_data(data, 'data2.csv')
+
 if __name__ == '__main__':
-    update_descriptions()
+    updater()
