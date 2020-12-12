@@ -139,7 +139,7 @@ def _get_perfume_data_from_row(row):
     category = _parse_category(text_without_brend)
     name = text_without_brend.split('(')[0].strip()
     if not name:
-        return
+        name = brend
     volume = _parse_volume(text_without_brend)
     classification = _parse_classification(text_without_brend)
     price = cols_auto[1].text.strip()
