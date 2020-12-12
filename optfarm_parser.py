@@ -75,7 +75,7 @@ def load_data(file_name=CSV_FILE):
 def _parse_brend(text):
     brend = None
     for BREND in BRENDS:
-        if BREND.lower() in text.lower():
+        if re.match(BREND.lower(), text.lower()):
             brend = BREND
             break
     return brend
@@ -190,6 +190,7 @@ def parsing(start_page=None):
         save_data(perfumes_data)
         page += 1
     print('ЗАВЕРШЕНО')
+
 
 
 if __name__ == '__main__':

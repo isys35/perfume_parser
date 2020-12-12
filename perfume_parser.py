@@ -29,6 +29,13 @@ def get_brends():
     return brends
 
 
+def resorted_brends():
+    with open('brends.json', 'r', encoding='utf-8') as json_file:
+        brends = json.load(json_file)
+    brends.sort(key=len, reverse=True)
+    save_json(brends, 'brends2.json')
+
+
+
 if __name__ == '__main__':
-    brends = get_brends()
-    save_json(brends, 'brends.json')
+    resorted_brends()

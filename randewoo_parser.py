@@ -79,7 +79,38 @@ def get_not_updated_description_percent():
     return int(100 * count_not_updated_data / len(data))
 
 
+def connect_csv():
+    main_data = optfarm_parser.load_data(CSV_FILE)
+    main_articles = [el[4] for el in main_data]
+    data_1 = optfarm_parser.load_data('data_with_description_4.csv')
+    for el in data_1:
+        if el[4] not in main_articles:
+            main_data.append(el)
+            main_articles.append(el[4])
+
+    data_2 = optfarm_parser.load_data('data_with_description_3.csv')
+    for el in data_2:
+        if el[4] not in main_articles:
+            main_data.append(el)
+            main_articles.append(el[4])
+
+    data_3 = optfarm_parser.load_data('data_with_description_2.csv')
+    for el in data_3:
+        if el[4] not in main_articles:
+            main_data.append(el)
+            main_articles.append(el[4])
+
+    data_4 = optfarm_parser.load_data('data_with_description_1.csv')
+    for el in data_4:
+        if el[4] not in main_articles:
+            main_data.append(el)
+            main_articles.append(el[4])
+
+    optfarm_parser.save_data(main_data, 'data_final.csv')
+
+
 
 
 if __name__ == '__main__':
-    update_descriptions()
+    # 14999
+    connect_csv()
