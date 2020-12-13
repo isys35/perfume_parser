@@ -112,5 +112,4 @@ def connect_csv():
 
 
 if __name__ == '__main__':
-    # 14999
-    connect_csv()
+    update_descriptions()
