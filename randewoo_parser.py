@@ -1,10 +1,10 @@
 import optfarm_parser
-import perfume_parser
 from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup
 import time
 from requests.exceptions import ConnectionError, ChunkedEncodingError
+import image_ban
 
 HOST = 'https://randewoo.ru'
 CSV_FILE = 'data_with_description.csv'
@@ -64,6 +64,9 @@ def update_descriptions(start_index=None):
                 notes = _parse_notes(soup_product)
                 if notes:
                     perfume_data[32], perfume_data[35], perfume_data[38] = notes
+            image_main_url = 'https:' + soup_product.select_one('img.js-main-product-image')['src']
+            image_host_url = image_ban.load_image_and_get_url(image_main_url)
+            perfume_data[2] = image_host_url
         else:
             perfume_data[9] = optfarm_parser.DESCRIPTION
         try:
@@ -78,35 +81,6 @@ def get_not_updated_description_percent():
     count_not_updated_data = len([el for el in data if el[9] == optfarm_parser.DESCRIPTION])
     return int(100 * count_not_updated_data / len(data))
 
-
-def connect_csv():
-    main_data = optfarm_parser.load_data(CSV_FILE)
-    main_articles = [el[4] for el in main_data]
-    data_1 = optfarm_parser.load_data('data_with_description_4.csv')
-    for el in data_1:
-        if el[4] not in main_articles:
-            main_data.append(el)
-            main_articles.append(el[4])
-
-    data_2 = optfarm_parser.load_data('data_with_description_3.csv')
-    for el in data_2:
-        if el[4] not in main_articles:
-            main_data.append(el)
-            main_articles.append(el[4])
-
-    data_3 = optfarm_parser.load_data('data_with_description_2.csv')
-    for el in data_3:
-        if el[4] not in main_articles:
-            main_data.append(el)
-            main_articles.append(el[4])
-
-    data_4 = optfarm_parser.load_data('data_with_description_1.csv')
-    for el in data_4:
-        if el[4] not in main_articles:
-            main_data.append(el)
-            main_articles.append(el[4])
-
-    optfarm_parser.save_data(main_data, 'data_final.csv')
 
 
 
