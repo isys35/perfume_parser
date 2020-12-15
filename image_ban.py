@@ -1,4 +1,5 @@
 import requests
+import sys
 
 CLIENT_ID = "k5dX16WlfEArklA1R8FW"
 SECRET_KEY = 'RT9dd5P4FK7QsuFSnEmLKATLovpH5jMgeFB'
@@ -15,7 +16,12 @@ def load_image_and_get_url(url):
         'url': url,
     }
     response = requests.post(POST_URL, json_data, headers=HEADERS)
-    return response.json()['data']['link']
+    try:
+        final_url = response.json()['data']['link']
+    except KeyError:
+        print(response.text)
+        sys.exit()
+    return final_url
 
 
 if __name__ == '__main__':
