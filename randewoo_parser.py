@@ -64,9 +64,12 @@ def update_descriptions(start_index=None):
                 notes = _parse_notes(soup_product)
                 if notes:
                     perfume_data[32], perfume_data[35], perfume_data[38] = notes
-            image_main_url = 'https:' + soup_product.select_one('img.js-main-product-image')['src']
-            image_host_url = image_ban.load_image_and_get_url(image_main_url)
-            perfume_data[2] = image_host_url
+            image_soup = soup_product.select_one('img.js-main-product-image')
+            # Можно ускорить, там где одинаковые названия одинаковые картинки
+            if image_soup:
+                image_main_url = 'https:' + image_soup['src']
+                image_host_url = image_ban.load_image_and_get_url(image_main_url)
+                perfume_data[2] = image_host_url
         else:
             perfume_data[9] = optfarm_parser.DESCRIPTION
         try:
@@ -82,8 +85,5 @@ def get_not_updated_description_percent():
     return int(100 * count_not_updated_data / len(data))
 
 
-
-
-
 if __name__ == '__main__':
-    update_descriptions(1148)
+    update_descriptions(5577)
